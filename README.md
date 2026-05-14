@@ -2,3 +2,9 @@
 Задача 1. Программа с ошибками - /cppl_42/02_compile/01_find_error/main.cpp   
 Задача 2. * - /algocpp_42/02_compile/02_empty/      
 
+Домашнее задание 03 к занятию «Жизненный цикл объекта. RAII»  
+Задача 1. Умный массив - /cppl_42/03_raii/01_smart_arr/main.cpp   
+Задача 2. Копирование умных массивов - /algocpp_42/03_raii/02_copy_arr/main.cpp    
+
+
+
