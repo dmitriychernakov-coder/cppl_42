@@ -66,7 +66,7 @@ public:
     }
 
     int get_element(int index) {
-        if(index >= size) {
+        if(index >= size || index < 0) {
             throw std::out_of_range("Out of range of array");
         }
         return alloc[index];
@@ -103,6 +103,8 @@ int main(int argc, char** argv) {
         arr = new_array;
 
         std::cout << arr.get_element(1) << std::endl; 
+        //std::cout << arr.get_element(15) << std::endl;
+        //std::cout << arr.get_element(-1) << std::endl; 
     }
     
     catch(std::exception& ex) {
