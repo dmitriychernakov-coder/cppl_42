@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/cmake_install.cmake",
+		"/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/cmake_install.cmake",
+		"/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

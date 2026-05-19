@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/demoVendorCatch2.dir/dz02.cpp.o -o demoVendorCatch2  catch2/src/libCatch2.a catch2/src/libCatch2Main.a catch2/src/libCatch2.a
