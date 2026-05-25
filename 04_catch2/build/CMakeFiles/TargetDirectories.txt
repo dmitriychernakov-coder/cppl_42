@@ -1,9 +1,0 @@
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/CMakeFiles/demoVendorCatch2.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/CMakeFiles/edit_cache.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/CMakeFiles/rebuild_cache.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/CMakeFiles/edit_cache.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/CMakeFiles/rebuild_cache.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/src/CMakeFiles/Catch2.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/src/CMakeFiles/Catch2WithMain.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/src/CMakeFiles/edit_cache.dir
-/Users/dim/eclipse-workspace/cppcode/src/cppl_42/04_catch2/build/catch2/src/CMakeFiles/rebuild_cache.dir
