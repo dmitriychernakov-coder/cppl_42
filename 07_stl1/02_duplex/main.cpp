@@ -2,6 +2,8 @@
 #include <string>
 #include<set>
 #include<stack>
+#include<algorithm>
+#include<vector>
 
 int main()
 {
@@ -20,22 +22,16 @@ int main()
         }
     }
 
+    std::set<char> char_set{text.begin(), text.end()};
 
-    std::multiset<char> char_multiset{text.begin(), text.end()};
-    std::set<char> char_set(char_multiset.begin(), char_multiset.end());
-    std::stack<char> char_stack;
+    std::vector<char> char_vec(char_set.begin(), char_set.end());
 
-    for (const auto& s : char_set) {
-        char_stack.push(s);
-    }
-    
+    std::sort (char_vec.begin(), char_vec.end(), std::greater<>());
 
     std::cout << "[OUT]: " << std::endl;
-    while (!char_stack.empty())  {
-        std::cout << char_stack.top() << std::endl;
-        char_stack.pop();
-    }
-
+    for(const auto& i:char_vec) {
+         std::cout << i << std::endl;
+    }        
 
     return 0;
 }
