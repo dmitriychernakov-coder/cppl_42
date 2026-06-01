@@ -1,9 +1,8 @@
 #include <iostream>
-#include <string>
+// #include <string>
 #include<set>
-#include<stack>
 #include<algorithm>
-#include<vector>
+
 
 int main()
 {
@@ -22,14 +21,10 @@ int main()
         }
     }
 
-    std::set<char> char_set{text.begin(), text.end()};
-
-    std::vector<char> char_vec(char_set.begin(), char_set.end());
-
-    std::sort (char_vec.begin(), char_vec.end(), std::greater<>());
+    std::set<char, std::greater<>> char_set(text.begin(), text.end());
 
     std::cout << "[OUT]: " << std::endl;
-    for(const auto& i:char_vec) {
+    for(const auto& i:char_set) {
          std::cout << i << std::endl;
     }        
 
