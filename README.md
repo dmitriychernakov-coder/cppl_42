@@ -27,3 +27,6 @@
 Задача 1. Клонирование объекта класса - /cppl_42/10_smart_ptr/01_clone/main.cpp    
 Задача 2. Устранение пересечения - /cppl_42/10_smart_ptr/02_intersection/main.cpp    
 
+Домашнее задание 11 к занятию «Move семантика»    
+Задача 1. КПеремещение объектов - /cppl_42/11_semantic/01_move_data/main.cpp    
+Задача 2. УБольшие числа - /cppl_42/11_semantic/02_big_data/main.cpp    
