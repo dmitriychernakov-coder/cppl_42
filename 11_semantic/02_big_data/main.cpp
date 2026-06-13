@@ -1,167 +1,135 @@
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <utility>
 
-class biging_integer {
-
-    std::vector<int> digits;
-
-    void trim() {
-        while (digits.size() > 1 && digits.back() == 0) {
-            digits.pop_back();
-        }
-    }
-
+class big_integer {
+    std::vector<char> digits;
 public:
 
-    explicit biging_integer(const std::string& str = "0") {
-
-        size_t start_num = 0;
-
-        if (str.empty()) {
-            digits.push_back(0);
-            return;
-        }
-
-
-        for (size_t i = str.size(); i > start_num; --i) {
-            char chr = str[i-1];
-            if (chr < '0' || chr > '9') {
-                throw std::invalid_argument("Wrong  number");
-            }
-            digits.push_back(chr - '0');
-        }
-
+    big_integer() {
+        digits.push_back(0);
     }
 
-    ~biging_integer() = default;
-
-    biging_integer(const biging_integer& other) = default;
-
-    biging_integer(biging_integer&& other) noexcept
-        : digits(std::move(other.digits)) {
+    explicit big_integer(const std::string& str_num) {
+        input(str_num);
     }
 
-    biging_integer& operator =(biging_integer&& other) noexcept {
+    big_integer(const big_integer& other) : digits(other.digits) {}
+
+    big_integer(big_integer&& other) noexcept : digits(std::move(other.digits)) {}
+
+    big_integer& operator=(const big_integer& other) {
+        if (this != &other) {
+            digits = other.digits;
+        }
+        return *this;
+    }
+
+    big_integer& operator=(big_integer&& other) noexcept {
         if (this != &other) {
             digits = std::move(other.digits);
         }
         return *this;
     }
 
-    biging_integer operator +(const biging_integer& other) {
-        biging_integer result;
-        result.digits.resize(std::max(this->digits.size(), other.digits.size()) + 1);
+    big_integer operator+(const big_integer& other) const {
+        big_integer result;
+        result.digits.clear();
+        int shift = 0;
+        auto it1 = this->digits.begin();
+        auto it2 = other.digits.begin();
 
-        int calc = 0;
-        for (size_t i = 0; i < result.digits.size(); ++i) {
-            
-            int sum = calc;
+        while (it1 != this->digits.end() || it2 != other.digits.end()) {
+            int digit1 = (it1 != this->digits.end()) ? *it1 : 0;
+            int digit2 = (it2 != other.digits.end()) ? *it2 : 0;
 
-            if (i < this->digits.size()) {
-                sum += this->digits[i];
-            };
+            int sum = digit1 + digit2 + shift;
+            shift = sum / 10;
+            result.digits.push_back(sum % 10);
 
-            if (i < other.digits.size()) {
-                sum += other.digits[i];
-            };
+            if (it1 != this->digits.end()) ++it1;
+            if (it2 != other.digits.end()) ++it2;
+        }
 
-            result.digits[i] = sum % 10;
-            calc = sum / 10;
+        if (shift > 0) {
+            result.digits.push_back(shift);
         }
 
         return result;
     }
 
-    biging_integer operator*(const biging_integer& other) const {
-
-        biging_integer result;
-
+    big_integer operator*(const big_integer& other) const {
+        big_integer result;
         for (size_t i = 0; i < other.digits.size(); ++i) {
-            int calc = 0;
-            biging_integer temp;
+            int shift = 0;
+            big_integer part_num;
+            part_num.digits.clear();
 
-            for (size_t j = 0; j < this->digits.size() || calc > 0; ++j) {
-                int prod = calc;
-                
-                if (j < this->digits.size()) {
-                    prod += this->digits[j] * other.digits[i];
-                }
-
-                temp.digits.push_back(prod % 10);
-                calc = prod / 10;
+            for (char d : this->digits) {
+                int mult = d * other.digits[i] + shift;
+                part_num.digits.push_back(mult % 10);
+                shift = mult / 10;
+            }
+            if (shift > 0) {
+                part_num.digits.push_back(shift);
             }
 
-            for (size_t k = 0; k < i; ++k) {
-                temp.digits.push_back(0);
+            for (size_t j = 0; j < i; ++j) {
+                part_num.digits.insert(part_num.digits.begin(), 0);
             }
 
-            result = result + temp;
-        }
-
-        return result;
-    }
-
-    biging_integer operator*(int multi) const {
-        return (*this) * biging_integer(std::to_string(multi));
-                
-        if (multi == 0) {
-            return biging_integer("0");
-        };
-
-        biging_integer result;
-        int calc = 0;
-
-        for (size_t i = 0; i < this->digits.size() || calc > 0; ++i) {
-            int prod = calc;
-            if (i < this->digits.size()) {
-                prod += this->digits[i] * multi;
-            }
-
-            result.digits.push_back(prod % 10);
-            calc = prod / 10;
+            result = result + part_num;
         }
         return result;
     }
 
-    friend std::ostream& operator <<(std::ostream& ost, const biging_integer& bigin);
+    void input(const std::string& text) {
+        bool is_digit = false;
+        for (char c : text) {
+            if (c >= '0' && c <= '9') {
+                digits.push_back(c - '0');
+                is_digit = true;
+            } else {
+                std::cerr << "Wrong digit: '" << c << "'" << std::endl;
+                digits.clear();
+                return;
+            }
+        }
+        if (!is_digit) { digits.push_back(0); }
+        std::reverse(digits.begin(), digits.end());
+    }
+
+    void print() const {
+        if (digits.empty()) {
+            std::cout << "No data";
+            return;
+        }
+        for (auto it = digits.rbegin(); it != digits.rend(); ++it) {
+            std::cout << static_cast<int>(*it);
+        }
+    }
 };
 
-std::ostream& operator <<(std::ostream& ost, const biging_integer& bigin) {
-
-    biging_integer temp(bigin); 
-    temp.trim();
-
-    for (auto i = temp.digits.rbegin(); i != temp.digits.rend(); ++i) {
-        ost << *i;
+    std::ostream& operator<<(std::ostream& os, const big_integer& num) {
+        num.print();
+        return os;
     }
-
-        return ost;
-    }
-
 
 int main() {
-    try {
-        auto number1 = biging_integer("114575");
-        auto number2 = biging_integer("78524");
+    auto number1 = big_integer("114575");
+    auto number2 = big_integer("78524");
 
-        //auto number2 = biging_integer("78524O");
+    std::cout << "number 1: " << number1 << std::endl;
+    std::cout << "number 2: " << number2 << std::endl;
 
-        std::cout << "Число 1: " << number1 << std::endl;
-        std::cout << "Число 2: " << number2 << std::endl;
+    auto result = number1 + number2;
 
-  
-        auto result_add = number1 + number2;
-        std::cout << "Сложение: " << result_add << std::endl;
+    std::cout << "result_sum: " << result << std::endl;
 
-        auto result_mult = number1 * 2;
-        std::cout << "Умножение: " << result_mult << std::endl;
-
-    } catch (const std::exception& e) {
-        std::cerr << "Ошибка: " << e.what() << '\n';
-    }
+    auto result_mult = number1 * number2;
+    std::cout << "result_mult: " << result_mult<< std::endl;
 
     return 0;
 }
