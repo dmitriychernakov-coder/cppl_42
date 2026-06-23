@@ -5,11 +5,11 @@
 #include <regex> 
 
 
-class ini_parser {
+class IniParser {
     std::map<std::string, std::map<std::string, std::string>> map_var;
 
 public:
-    explicit ini_parser(const std::string& filename) {
+    explicit IniParser(const std::string& filename) {
         std::ifstream file(filename);
         if (!file.is_open()) {
             throw std::runtime_error("Error no file " + filename);
@@ -56,39 +56,53 @@ public:
         }
     }
 
-    template <typename T>
-    T get_value(const std::string& key_path) const {
-        size_t dot_pos = key_path.find('.');
-        if (dot_pos == std::string::npos) {
-            throw std::runtime_error("Expect section.key");
+
+
+public:
+    template<typename T>
+    T getvalue(const std::string& section, const std::string& var) {
+        T result{};
+        //todo: получаем строку из имени переменной и секции в stringvalue
+            std::string stringvalue = getvaluestring(section, var);
+            
+        //дальше может варьироваться в зависимости от фантазии typeid(int) == typeid(T)
+        if constexpr (std::is_same<int, T>::value) {
+            result = std::stoi(stringvalue);
         }
-
-        std::string section = key_path.substr(0, dot_pos);
-        std::string key = key_path.substr(dot_pos + 1);
-
-        auto sec_var = map_var.find(section);
-        if (sec_var == map_var.end()) {
-            throw std::runtime_error("Swction " + section + " not finded");
+        else if constexpr (std::is_same<double, T>::value) {
+            result = std::stod(stringvalue);
         }
-
-        auto var_dat = sec_var->second.find(key);
-        if (var_dat == sec_var->second.end()) {
-            throw std::runtime_error("Key  " + key + " not finded in '" + section);
+        else if constexpr (std::is_same<std::string, T>::value) {
+            result = stringvalue;
         }
-
-        try {
-            return static_cast<T>(std::stoi(var_dat->second));
-        } catch (const std::invalid_argument&) {
-            throw std::runtime_error("Data  " + var_dat->second + " not converted to int");
-        } 
+        else
+        {
+        static_assert(sizeof(T) == -1, "no implementation for this type!");
+        }
+        //возвращаем результат
+        return result;
     }
-
+private:
+    std::string getvaluestring(const std::string& section, const std::string& var) {
+    //return "1.3";
+    auto sec_var = map_var.find(section);
+        if (sec_var == map_var.end()) {
+            throw std::runtime_error(section + " not found");
+        }
+        auto var_val = sec_var->second.find(var);
+        if (var_val == sec_var->second.end()) {
+            throw std::runtime_error(var + " not found in " + section);
+        }
+        return var_val->second;
+    } 
 };
 
 int main() {
     try {
-        ini_parser parser("file.ini");
-        int value = parser.get_value<int>("Section1.var1");
+        IniParser parser("file.ini");
+        auto value = parser.getvalue<int>("Section1","var1");
+        //auto value = parser.getvalue<std::string>("Section2","var2");
+        //auto value = parser.getvalue<double>("Section1","var1");
         std::cout << "Value: " << value << "   in Section1.var1" << std::endl;
 
     } catch (const std::exception& e) {
